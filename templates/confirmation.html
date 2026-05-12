@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmed - Grand Stay Hotel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        nav {
+            background: #1a1a2e;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav h1 { color: #e2b96f; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; }
+        .container {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .card {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .checkmark { font-size: 70px; margin-bottom: 20px; }
+        h2 { color: #28a745; font-size: 32px; margin-bottom: 15px; }
+        p { color: #666; font-size: 18px; margin-bottom: 10px; }
+        .booking-info {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            text-align: left;
+        }
+        .booking-info p { margin: 8px 0; color: #444; }
+        .btn {
+            display: inline-block;
+            background: #1a1a2e;
+            color: white;
+            padding: 14px 35px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .btn:hover { background: #e2b96f; color: #1a1a2e; }
+        .btn-outline {
+            background: white;
+            color: #1a1a2e;
+            border: 2px solid #1a1a2e;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>🏨 Grand Stay Hotel</h1>
+        <div>
+            <a href="/">Home</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <div class="checkmark">✅</div>
+            <h2>Booking Confirmed!</h2>
+            <p>Thank you for choosing Grand Stay Hotel</p>
+            <div class="booking-info">
+                <p><strong>Booking ID:</strong> #{{ booking['id'] }}</p>
+                <p><strong>Check-in:</strong> {{ booking['check_in'] }}</p>
+                <p><strong>Check-out:</strong> {{ booking['check_out'] }}</p>
+                <p><strong>Status:</strong> ✅ {{ booking['status'] }}</p>
+                <p><strong>Payment:</strong> ✅ Paid</p>
+            </div>
+            <a href="/rooms" class="btn">Book Another Room</a>
+            <a href="/dashboard" class="btn btn-outline">Go to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

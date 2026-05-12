@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Room - Grand Stay Hotel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        nav {
+            background: #1a1a2e;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav h1 { color: #e2b96f; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h2 { color: #1a1a2e; margin-bottom: 25px; font-size: 26px; }
+        .room-details {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        .room-details p { margin: 5px 0; color: #444; font-size: 16px; }
+        .price { color: #e2b96f; font-size: 22px; font-weight: bold; }
+        .error {
+            color: #d32f2f;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        label { display: block; margin: 15px 0 5px; color: #333; font-weight: bold; }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #1a1a2e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover { background: #e2b96f; color: #1a1a2e; }
+        a { color: #1a1a2e; display: block; text-align: center; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>🏨 Grand Stay Hotel</h1>
+        <div>
+            <a href="/rooms">← Back to Rooms</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <h2>📅 Book Your Room</h2>
+            <div class="room-details">
+                <p><strong>Room Number:</strong> {{ room['room_number'] }}</p>
+                <p><strong>Type:</strong> {{ room['room_type'] }}</p>
+                <p class="price">${{ room['price_per_night'] }} per night</p>
+            </div>
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+            <form method="POST">
+                <label>Check-in Date</label>
+                <input type="date" name="check_in" required>
+                <label>Check-out Date</label>
+                <input type="date" name="check_out" required>
+                <button type="submit">Confirm Booking & Pay</button>
+            </form>
+            <a href="/rooms">Cancel</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Rooms - Grand Stay Hotel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        nav {
+            background: #1a1a2e;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav h1 { color: #e2b96f; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; }
+        nav a:hover { color: #e2b96f; }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .header { margin-bottom: 25px; }
+        .header h2 { color: #1a1a2e; font-size: 32px; margin-bottom: 10px; }
+        .header p { color: #666; font-size: 18px; }
+        .actions { margin-bottom: 20px; }
+        .actions a { background: #e2b96f; color: #1a1a2e; padding: 10px 16px; border-radius: 6px; text-decoration: none; }
+        .actions a:hover { background: #c9a55a; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 14px 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background: #1a1a2e; color: white; }
+        tr:hover { background: #f1f1f1; }
+        form { display: inline; }
+        button { background: #c62828; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #b71c1c; }
+        .logout { display: inline-block; margin-top: 20px; color: #e2b96f; }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>🏨 Admin Rooms</h1>
+        <div>
+            <a href="/admin">Dashboard</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="header">
+            <h2>Room Management</h2>
+            <p>View, add, update, or delete rooms available in the hotel.</p>
+        </div>
+        <div class="actions">
+            <a href="/admin/rooms/add">Add New Room</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Room Number</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in rooms %}
+                <tr>
+                    <td>{{ room['id'] }}</td>
+                    <td>{{ room['room_number'] }}</td>
+                    <td>{{ room['room_type'] }}</td>
+                    <td>${{ room['price_per_night'] }}</td>
+                    <td>{{ room['status'] }}</td>
+                    <td>
+                        <a href="/admin/rooms/edit/{{ room['id'] }}">Edit</a>
+                        <form method="POST" action="/admin/rooms/delete/{{ room['id'] }}" style="display:inline; margin-left:10px;">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6">No rooms available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+</body>
+</html>

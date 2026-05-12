@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Grand Stay Hotel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        nav {
+            background: #1a1a2e;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav h1 { color: #e2b96f; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; }
+        nav a:hover { color: #e2b96f; }
+        .container { padding: 40px; max-width: 900px; margin: auto; }
+        .welcome {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .welcome h2 { color: #1a1a2e; font-size: 32px; margin-bottom: 10px; }
+        .welcome p { color: #666; font-size: 18px; }
+        .cards {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            width: 200px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: #1a1a2e;
+        }
+        .card:hover { background: #1a1a2e; color: white; }
+        .card h3 { font-size: 40px; margin-bottom: 10px; }
+        .card p { font-size: 16px; }
+        .logout {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: red;
+            text-decoration: none;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>🏨 Grand Stay Hotel</h1>
+        <div>
+            <a href="/rooms">Rooms</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="welcome">
+            <h2>Welcome, {{ name }}! 👋</h2>
+            <p>What would you like to do today?</p>
+        </div>
+        <div class="cards">
+            <a href="/rooms" class="card">
+                <h3>🛏️</h3>
+                <p>Browse Rooms</p>
+            </a>
+            <a href="/" class="card">
+                <h3>🏠</h3>
+                <p>Home</p>
+            </a>
+            <a href="/logout" class="card">
+                <h3>🚪</h3>
+                <p>Logout</p>
+            </a>
+        </div>
+        <a href="/logout" class="logout">← Logout</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
+hotel.db
+.git
+.env
+.DS_Store

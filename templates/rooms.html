@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rooms - Grand Stay Hotel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        nav {
+            background: #1a1a2e;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav h1 { color: #e2b96f; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; }
+        nav a:hover { color: #e2b96f; }
+        .container { padding: 40px; max-width: 1100px; margin: auto; }
+        h2 { color: #1a1a2e; margin-bottom: 30px; font-size: 30px; text-align: center; }
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .room-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .room-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .room-info { padding: 20px; }
+        .room-info h3 { color: #1a1a2e; font-size: 20px; margin-bottom: 8px; }
+        .room-info p { color: #666; margin-bottom: 5px; }
+        .price { color: #e2b96f; font-size: 22px; font-weight: bold; margin: 10px 0; }
+        .btn {
+            display: block;
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn:hover { background: #e2b96f; color: #1a1a2e; }
+        .no-rooms { text-align: center; color: #666; font-size: 20px; margin-top: 50px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>🏨 Grand Stay Hotel</h1>
+        <div>
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>Available Rooms</h2>
+        {% if rooms %}
+        <div class="rooms-grid">
+            {% for room in rooms %}
+            <div class="room-card">
+                <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400" alt="Room">
+                <div class="room-info">
+                    <h3>Room {{ room['room_number'] }}</h3>
+                    <p>Type: {{ room['room_type'] }}</p>
+                    <p>Status: {{ room['status'] }}</p>
+                    <p class="price">${{ room['price_per_night'] }} / night</p>
+                    <a href="/book/{{ room['id'] }}" class="btn">Book Now</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="no-rooms">😔 No rooms available at the moment. Please check back later.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

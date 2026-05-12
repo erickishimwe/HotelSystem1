@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  web:
+    # Build Docker image from Dockerfile in current directory
+    build: .
+    # Container name for reference
+    container_name: hotel-reservation-web
+    # Port mapping: external:internal
+    ports:
+      - "5000:5000"
+    # Mount volumes for persistent data and development
+    volumes:
+      # Mount app directory for live code changes during development
+      - .:/app
+      # Mount database directory for persistent SQLite storage
+      - db_data:/app/data
+    # Environment variables
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=production
+    # Restart policy: always restart container if it stops
+    restart: unless-stopped
+
+# Named volume for database persistence across container restarts
+volumes:
+  db_data:
+    driver: local
