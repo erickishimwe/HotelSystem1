@@ -383,6 +383,57 @@ class DatabaseManager:
             cursor = conn.cursor()
             return cursor.execute('SELECT * FROM bookings WHERE id=?', (booking_id,)).fetchone()
 
+    def get_user_bookings(self, user_id):
+        """
+        Retrieve all bookings for a specific guest.
+
+        Args:
+            user_id (int): ID of the guest
+
+        Returns:
+            List[sqlite3.Row]: Bookings with room and payment details
+        """
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            return cursor.execute('''
+                SELECT b.id,
+                       r.room_number,
+                       r.room_type,
+                       b.check_in,
+                       b.check_out,
+                       b.status AS booking_status,
+                       p.amount,
+                       p.status AS payment_status
+                FROM bookings b
+                JOIN rooms r ON b.room_id = r.id
+                LEFT JOIN payments p ON b.id = p.booking_id
+                WHERE b.user_id = ?
+                ORDER BY b.id DESC
+            ''', (user_id,)).fetchall()
+
+    def cancel_booking(self, booking_id, user_id):
+        """
+        Cancel a booking and mark the room as available again.
+
+        Args:
+            booking_id (int): ID of the booking to cancel
+            user_id (int): ID of the guest (for ownership verification)
+
+        Returns:
+            bool: True if cancelled successfully, False if not found or unauthorized
+        """
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            booking = cursor.execute(
+                'SELECT * FROM bookings WHERE id=? AND user_id=?', (booking_id, user_id)
+            ).fetchone()
+            if not booking or booking['status'] == 'cancelled':
+                return False
+            cursor.execute('UPDATE bookings SET status=? WHERE id=?', ('cancelled', booking_id))
+            cursor.execute('UPDATE rooms SET status=? WHERE id=?', ('available', booking['room_id']))
+            conn.commit()
+            return True
+
     def get_all_bookings(self):
         """
         Retrieve all bookings with complete details (admin view).

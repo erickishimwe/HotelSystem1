@@ -22,7 +22,7 @@ from database import DatabaseManager
 # Initialize Flask application with security configurations
 app = Flask(__name__)
 import os
-app.secret_key = os.environ.get('SECRET_KEY', 'hotel_secret_key_2026')  # Use env var in production
+app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24))
 app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access to session cookies
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # CSRF protection
 app.config['TEMPLATES_AUTO_RELOAD'] = True  # Auto-reload templates on changes
@@ -341,9 +341,32 @@ def admin_delete_room(room_id):
     db_manager.delete_room(room_id)
     return redirect(url_for('admin_rooms'))
 
+# ================== GUEST BOOKING HISTORY & CANCEL ==================
+
+@app.route('/my-bookings')
+def my_bookings():
+    """
+    Guest booking history route.
+    Displays all bookings made by the logged-in guest.
+    """
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    bookings = db_manager.get_user_bookings(session['user_id'])
+    return render_template('my_bookings.html', name=session.get('user_name'), bookings=bookings)
+
+@app.route('/cancel-booking/<int:booking_id>', methods=['POST'])
+def cancel_booking(booking_id):
+    """
+    Cancel a booking route.
+    Allows a logged-in guest to cancel their own booking.
+    """
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    db_manager.cancel_booking(booking_id, session['user_id'])
+    return redirect(url_for('my_bookings'))
+
 # ================== APPLICATION ENTRY POINT ==================
 
 if __name__ == '__main__':
-    # Run Flask development server with debug mode enabled
-    # debug=True enables auto-reload on code changes and detailed error pages
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    debug_mode = os.environ.get('FLASK_ENV', 'production') == 'development'
+    app.run(host='0.0.0.0', port=5000, debug=debug_mode)
