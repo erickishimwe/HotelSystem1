@@ -2,93 +2,123 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Room - Grand Stay Hotel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: white; min-height: 100vh; }
+
         nav {
-            background: #1a1a2e;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 20px 60px; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(13,13,13,0.95); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226,185,111,0.15); position: sticky; top: 0; z-index: 100;
         }
-        nav h1 { color: #e2b96f; }
-        nav a { color: white; text-decoration: none; margin-left: 20px; }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-        }
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 22px; color: #e2b96f; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; margin-left: 30px; font-size: 14px; transition: color 0.3s; }
+        .nav-links a:hover { color: #e2b96f; }
+
+        .container { max-width: 700px; margin: 60px auto; padding: 0 20px; }
+        .back-link { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 30px; transition: color 0.3s; }
+        .back-link:hover { color: #e2b96f; }
+
         .card {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #111; border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px; overflow: hidden;
         }
-        h2 { color: #1a1a2e; margin-bottom: 25px; font-size: 26px; }
-        .room-details {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 25px;
+        .card-header {
+            background: linear-gradient(135deg, rgba(226,185,111,0.12), rgba(226,185,111,0.04));
+            border-bottom: 1px solid rgba(226,185,111,0.15);
+            padding: 35px 40px;
         }
-        .room-details p { margin: 5px 0; color: #444; font-size: 16px; }
-        .price { color: #e2b96f; font-size: 22px; font-weight: bold; }
-        .error {
-            color: #d32f2f;
-            margin-bottom: 20px;
-            text-align: center;
+        .card-header span { color: #e2b96f; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+        .card-header h2 { font-family: 'Playfair Display', serif; font-size: 30px; margin-top: 8px; }
+
+        .room-info { padding: 30px 40px; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; gap: 30px; flex-wrap: wrap; }
+        .room-info-item { }
+        .room-info-item .label { font-size: 12px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .room-info-item .value { font-size: 18px; font-weight: 600; }
+        .room-info-item .value.price { color: #e2b96f; font-size: 24px; }
+
+        .form-body { padding: 35px 40px; }
+        .form-group { margin-bottom: 25px; }
+        label { display: block; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); letter-spacing: 0.5px; margin-bottom: 8px; text-transform: uppercase; }
+        input[type="date"] {
+            width: 100%; padding: 14px 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; color: white; font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s; outline: none;
+            color-scheme: dark;
         }
-        label { display: block; margin: 15px 0 5px; color: #333; font-weight: bold; }
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 15px;
+        input[type="date"]:focus { border-color: #e2b96f; background: rgba(226,185,111,0.05); }
+
+        .error-box {
+            background: rgba(220,53,69,0.1); border: 1px solid rgba(220,53,69,0.3);
+            color: #ff6b7a; padding: 12px 16px; border-radius: 10px;
+            font-size: 14px; margin-bottom: 20px;
         }
-        button {
-            width: 100%;
-            padding: 14px;
-            background: #1a1a2e;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
+        .btn-submit {
+            width: 100%; padding: 16px;
+            background: linear-gradient(135deg, #e2b96f, #f0ca85);
+            color: #0a0a0a; border: none; border-radius: 12px;
+            font-size: 16px; font-weight: 700; cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 25px rgba(226,185,111,0.3);
         }
-        button:hover { background: #e2b96f; color: #1a1a2e; }
-        a { color: #1a1a2e; display: block; text-align: center; margin-top: 15px; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(226,185,111,0.45); }
+        .cancel-link { display: block; text-align: center; margin-top: 15px; color: rgba(255,255,255,0.3); text-decoration: none; font-size: 14px; transition: color 0.3s; }
+        .cancel-link:hover { color: #ff6b6b; }
     </style>
 </head>
 <body>
     <nav>
-        <h1>🏨 Grand Stay Hotel</h1>
-        <div>
+        <div class="nav-logo">🏨 Grand Stay</div>
+        <div class="nav-links">
             <a href="/rooms">← Back to Rooms</a>
         </div>
     </nav>
+
     <div class="container">
+        <a href="/rooms" class="back-link">← Back to Rooms</a>
         <div class="card">
-            <h2>📅 Book Your Room</h2>
-            <div class="room-details">
-                <p><strong>Room Number:</strong> {{ room['room_number'] }}</p>
-                <p><strong>Type:</strong> {{ room['room_type'] }}</p>
-                <p class="price">${{ room['price_per_night'] }} per night</p>
+            <div class="card-header">
+                <span>Reservation</span>
+                <h2>Book Your Room</h2>
             </div>
-            {% if error %}
-                <p class="error">{{ error }}</p>
-            {% endif %}
-            <form method="POST">
-                <label>Check-in Date</label>
-                <input type="date" name="check_in" required>
-                <label>Check-out Date</label>
-                <input type="date" name="check_out" required>
-                <button type="submit">Confirm Booking & Pay</button>
-            </form>
-            <a href="/rooms">Cancel</a>
+            <div class="room-info">
+                <div class="room-info-item">
+                    <div class="label">Room Number</div>
+                    <div class="value">{{ room['room_number'] }}</div>
+                </div>
+                <div class="room-info-item">
+                    <div class="label">Room Type</div>
+                    <div class="value">{{ room['room_type'] }}</div>
+                </div>
+                <div class="room-info-item">
+                    <div class="label">Price</div>
+                    <div class="value price">${{ room['price_per_night'] }} / night</div>
+                </div>
+            </div>
+            <div class="form-body">
+                {% if error %}
+                <div class="error-box">⚠️ {{ error }}</div>
+                {% endif %}
+                <form method="POST">
+                    <div class="form-group">
+                        <label>Check-in Date</label>
+                        <input type="date" name="check_in" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Check-out Date</label>
+                        <input type="date" name="check_out" required>
+                    </div>
+                    <button type="submit" class="btn-submit">✓ Confirm Booking & Pay</button>
+                </form>
+                <a href="/rooms" class="cancel-link">Cancel reservation</a>
+            </div>
         </div>
     </div>
 </body>

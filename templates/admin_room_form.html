@@ -2,65 +2,118 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ form_title }} - Grand Stay Hotel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: white; min-height: 100vh; }
+
         nav {
-            background: #1a1a2e;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 20px 60px; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(13,13,13,0.95); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226,185,111,0.15); position: sticky; top: 0; z-index: 100;
         }
-        nav h1 { color: #e2b96f; }
-        nav a { color: white; text-decoration: none; margin-left: 20px; }
-        nav a:hover { color: #e2b96f; }
-        .container { max-width: 700px; margin: 40px auto; padding: 0 20px; }
-        .card { background: white; padding: 35px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
-        .card h2 { color: #1a1a2e; margin-bottom: 20px; }
-        label { display: block; margin: 16px 0 8px; color: #333; }
-        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; }
-        button { margin-top: 20px; width: 100%; padding: 14px; background: #1a1a2e; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
-        button:hover { background: #e2b96f; color: #1a1a2e; }
-        .error { color: red; margin-bottom: 15px; }
-        .link-row { margin-top: 20px; }
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 22px; color: #e2b96f; }
+        .nav-badge { background: rgba(226,185,111,0.15); border: 1px solid rgba(226,185,111,0.3); color: #e2b96f; padding: 4px 12px; border-radius: 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-left: 12px; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; margin-left: 30px; font-size: 14px; transition: color 0.3s; }
+        .nav-links a:hover { color: #e2b96f; }
+        .nav-links .logout { color: rgba(255,100,100,0.8); }
+
+        .container { max-width: 650px; margin: 60px auto; padding: 0 20px; }
+        .back-link { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 30px; transition: color 0.3s; }
+        .back-link:hover { color: #e2b96f; }
+
+        .card { background: #111; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; overflow: hidden; }
+        .card-header {
+            background: linear-gradient(135deg, rgba(226,185,111,0.1), rgba(226,185,111,0.03));
+            border-bottom: 1px solid rgba(226,185,111,0.15); padding: 35px 40px;
+        }
+        .card-header span { color: #e2b96f; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+        .card-header h2 { font-family: 'Playfair Display', serif; font-size: 28px; margin-top: 8px; }
+
+        .card-body { padding: 35px 40px; }
+        .form-group { margin-bottom: 22px; }
+        label { display: block; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); letter-spacing: 0.5px; margin-bottom: 8px; text-transform: uppercase; }
+        input, select {
+            width: 100%; padding: 14px 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; color: white; font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s, background 0.3s; outline: none;
+        }
+        input:focus, select:focus { border-color: #e2b96f; background: rgba(226,185,111,0.05); }
+        input::placeholder { color: rgba(255,255,255,0.25); }
+        select option { background: #1a1a1a; color: white; }
+
+        .error-box {
+            background: rgba(220,53,69,0.1); border: 1px solid rgba(220,53,69,0.3);
+            color: #ff6b7a; padding: 12px 16px; border-radius: 10px;
+            font-size: 14px; margin-bottom: 20px;
+        }
+        .btn-submit {
+            width: 100%; padding: 15px;
+            background: linear-gradient(135deg, #e2b96f, #f0ca85);
+            color: #0a0a0a; border: none; border-radius: 12px;
+            font-size: 15px; font-weight: 700; cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 25px rgba(226,185,111,0.3);
+            margin-top: 5px;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(226,185,111,0.45); }
+        .cancel-link { display: block; text-align: center; margin-top: 15px; color: rgba(255,255,255,0.3); text-decoration: none; font-size: 14px; transition: color 0.3s; }
+        .cancel-link:hover { color: #e2b96f; }
     </style>
 </head>
 <body>
     <nav>
-        <h1>🏨 Admin Room Form</h1>
-        <div>
+        <div style="display:flex; align-items:center;">
+            <div class="nav-logo">🏨 Grand Stay</div>
+            <span class="nav-badge">Admin</span>
+        </div>
+        <div class="nav-links">
             <a href="/admin/rooms">Rooms List</a>
-            <a href="/logout">Logout</a>
+            <a href="/admin">Dashboard</a>
+            <a href="/logout" class="logout">Logout</a>
         </div>
     </nav>
+
     <div class="container">
+        <a href="/admin/rooms" class="back-link">← Back to Rooms</a>
         <div class="card">
-            <h2>{{ form_title }}</h2>
-            {% if error %}
-                <p class="error">{{ error }}</p>
-            {% endif %}
-            <form method="POST" action="{{ action }}">
-                <label>Room Number</label>
-                <input type="text" name="room_number" value="{{ room['room_number'] if room else '' }}" required>
-
-                <label>Room Type</label>
-                <input type="text" name="room_type" value="{{ room['room_type'] if room else '' }}" required>
-
-                <label>Price per Night</label>
-                <input type="text" name="price_per_night" value="{{ room['price_per_night'] if room else '' }}" required>
-
-                <label>Status</label>
-                <select name="status">
-                    <option value="available" {% if room and room['status'] == 'available' %}selected{% endif %}>Available</option>
-                    <option value="booked" {% if room and room['status'] == 'booked' %}selected{% endif %}>Booked</option>
-                </select>
-
-                <button type="submit">Save Room</button>
-            </form>
-            <div class="link-row">
-                <a href="/admin/rooms">← Back to Rooms</a>
+            <div class="card-header">
+                <span>Room Management</span>
+                <h2>{{ form_title }}</h2>
+            </div>
+            <div class="card-body">
+                {% if error %}
+                <div class="error-box">⚠️ {{ error }}</div>
+                {% endif %}
+                <form method="POST" action="{{ action }}">
+                    <div class="form-group">
+                        <label>Room Number</label>
+                        <input type="text" name="room_number" value="{{ room['room_number'] if room else '' }}" placeholder="e.g. 301" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Room Type</label>
+                        <input type="text" name="room_type" value="{{ room['room_type'] if room else '' }}" placeholder="e.g. Deluxe, Suite" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price per Night ($)</label>
+                        <input type="text" name="price_per_night" value="{{ room['price_per_night'] if room else '' }}" placeholder="e.g. 150" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status">
+                            <option value="available" {% if room and room['status'] == 'available' %}selected{% endif %}>Available</option>
+                            <option value="booked" {% if room and room['status'] == 'booked' %}selected{% endif %}>Booked</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit">✓ Save Room</button>
+                </form>
+                <a href="/admin/rooms" class="cancel-link">Cancel</a>
             </div>
         </div>
     </div>

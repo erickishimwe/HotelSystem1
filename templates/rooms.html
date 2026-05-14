@@ -2,84 +2,112 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rooms - Grand Stay Hotel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: white; min-height: 100vh; }
+
         nav {
-            background: #1a1a2e;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 20px 60px; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(13,13,13,0.95); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226,185,111,0.15); position: sticky; top: 0; z-index: 100;
         }
-        nav h1 { color: #e2b96f; }
-        nav a { color: white; text-decoration: none; margin-left: 20px; }
-        nav a:hover { color: #e2b96f; }
-        .container { padding: 40px; max-width: 1100px; margin: auto; }
-        h2 { color: #1a1a2e; margin-bottom: 30px; font-size: 30px; text-align: center; }
-        .rooms-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 22px; color: #e2b96f; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; margin-left: 30px; font-size: 14px; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #e2b96f; }
+        .nav-links .logout { color: rgba(255,100,100,0.8); }
+
+        .page-header {
+            text-align: center; padding: 70px 20px 50px;
+            background: linear-gradient(180deg, rgba(226,185,111,0.05) 0%, transparent 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
+        .page-header span { color: #e2b96f; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; }
+        .page-header h1 { font-family: 'Playfair Display', serif; font-size: 48px; margin-top: 10px; }
+        .page-header p { color: rgba(255,255,255,0.4); margin-top: 12px; font-size: 16px; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+
+        .rooms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 30px; }
         .room-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #111; border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 20px; overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
         }
-        .room-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
+        .room-card:hover { transform: translateY(-8px); border-color: rgba(226,185,111,0.3); }
+        .room-card img { width: 100%; height: 230px; object-fit: cover; display: block; }
+        .room-card-body { padding: 28px; }
+        .room-type-badge {
+            background: rgba(226,185,111,0.1); border: 1px solid rgba(226,185,111,0.25);
+            color: #e2b96f; padding: 4px 12px; border-radius: 20px;
+            font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+            display: inline-block; margin-bottom: 12px;
         }
-        .room-info { padding: 20px; }
-        .room-info h3 { color: #1a1a2e; font-size: 20px; margin-bottom: 8px; }
-        .room-info p { color: #666; margin-bottom: 5px; }
-        .price { color: #e2b96f; font-size: 22px; font-weight: bold; margin: 10px 0; }
-        .btn {
-            display: block;
-            background: #1a1a2e;
-            color: white;
-            text-align: center;
-            padding: 12px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
+        .room-card-body h3 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+        .room-card-body .price { color: #e2b96f; font-size: 26px; font-weight: 700; margin: 15px 0; }
+        .room-card-body .price span { font-size: 14px; color: rgba(255,255,255,0.4); font-weight: 400; }
+        .amenities { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+        .amenity { background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 20px; font-size: 12px; color: rgba(255,255,255,0.5); }
+        .btn-book {
+            display: block; width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #e2b96f, #f0ca85);
+            color: #0a0a0a; text-align: center; text-decoration: none;
+            border-radius: 12px; font-weight: 700; font-size: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 6px 20px rgba(226,185,111,0.25);
         }
-        .btn:hover { background: #e2b96f; color: #1a1a2e; }
-        .no-rooms { text-align: center; color: #666; font-size: 20px; margin-top: 50px; }
+        .btn-book:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(226,185,111,0.4); }
+
+        .no-rooms {
+            text-align: center; padding: 80px 20px;
+            color: rgba(255,255,255,0.4); font-size: 18px;
+        }
+        .no-rooms span { font-size: 50px; display: block; margin-bottom: 15px; }
     </style>
 </head>
 <body>
     <nav>
-        <h1>🏨 Grand Stay Hotel</h1>
-        <div>
-            <a href="/">Home</a>
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
+        <div class="nav-logo">🏨 Grand Stay</div>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/my-bookings">My Bookings</a>
+            <a href="/logout" class="logout">Logout</a>
         </div>
     </nav>
+
+    <div class="page-header">
+        <span>Our Collection</span>
+        <h1>Available Rooms</h1>
+        <p>Choose from our selection of premium rooms and suites</p>
+    </div>
+
     <div class="container">
-        <h2>Available Rooms</h2>
         {% if rooms %}
         <div class="rooms-grid">
             {% for room in rooms %}
             <div class="room-card">
-                <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400" alt="Room">
-                <div class="room-info">
+                <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600" alt="Room {{ room['room_number'] }}">
+                <div class="room-card-body">
+                    <div class="room-type-badge">{{ room['room_type'] }}</div>
                     <h3>Room {{ room['room_number'] }}</h3>
-                    <p>Type: {{ room['room_type'] }}</p>
-                    <p>Status: {{ room['status'] }}</p>
-                    <p class="price">${{ room['price_per_night'] }} / night</p>
-                    <a href="/book/{{ room['id'] }}" class="btn">Book Now</a>
+                    <div class="amenities">
+                        <span class="amenity">🛁 En-suite</span>
+                        <span class="amenity">📶 Free WiFi</span>
+                        <span class="amenity">❄️ AC</span>
+                    </div>
+                    <div class="price">${{ room['price_per_night'] }} <span>/ night</span></div>
+                    <a href="/book/{{ room['id'] }}" class="btn-book">Book This Room</a>
                 </div>
             </div>
             {% endfor %}
         </div>
         {% else %}
-        <p class="no-rooms">😔 No rooms available at the moment. Please check back later.</p>
+        <div class="no-rooms">
+            <span>😔</span>
+            No rooms available at the moment. Please check back later.
+        </div>
         {% endif %}
     </div>
 </body>

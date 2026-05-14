@@ -2,87 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Rooms - Grand Stay Hotel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: white; min-height: 100vh; }
+
         nav {
-            background: #1a1a2e;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 20px 60px; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(13,13,13,0.95); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226,185,111,0.15); position: sticky; top: 0; z-index: 100;
         }
-        nav h1 { color: #e2b96f; }
-        nav a { color: white; text-decoration: none; margin-left: 20px; }
-        nav a:hover { color: #e2b96f; }
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        .header { margin-bottom: 25px; }
-        .header h2 { color: #1a1a2e; font-size: 32px; margin-bottom: 10px; }
-        .header p { color: #666; font-size: 18px; }
-        .actions { margin-bottom: 20px; }
-        .actions a { background: #e2b96f; color: #1a1a2e; padding: 10px 16px; border-radius: 6px; text-decoration: none; }
-        .actions a:hover { background: #c9a55a; }
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th, td { padding: 14px 12px; border-bottom: 1px solid #ddd; text-align: left; }
-        th { background: #1a1a2e; color: white; }
-        tr:hover { background: #f1f1f1; }
-        form { display: inline; }
-        button { background: #c62828; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #b71c1c; }
-        .logout { display: inline-block; margin-top: 20px; color: #e2b96f; }
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 22px; color: #e2b96f; }
+        .nav-badge { background: rgba(226,185,111,0.15); border: 1px solid rgba(226,185,111,0.3); color: #e2b96f; padding: 4px 12px; border-radius: 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-left: 12px; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; margin-left: 30px; font-size: 14px; transition: color 0.3s; }
+        .nav-links a:hover { color: #e2b96f; }
+        .nav-links .logout { color: rgba(255,100,100,0.8); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+        .page-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; flex-wrap: wrap; gap: 15px; }
+        .page-top h1 { font-family: 'Playfair Display', serif; font-size: 36px; }
+        .page-top h1 span { color: #e2b96f; }
+        .btn-add {
+            background: linear-gradient(135deg, #e2b96f, #f0ca85);
+            color: #0a0a0a; padding: 12px 25px; border-radius: 30px;
+            text-decoration: none; font-weight: 700; font-size: 14px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 6px 20px rgba(226,185,111,0.25);
+        }
+        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(226,185,111,0.4); }
+
+        .table-wrap { background: #111; border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; overflow: hidden; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { background: rgba(226,185,111,0.08); color: rgba(255,255,255,0.5); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; padding: 16px 20px; text-align: left; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.07); }
+        td { padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; color: rgba(255,255,255,0.8); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge-available { background: rgba(40,167,69,0.15); color: #4caf50; border: 1px solid rgba(40,167,69,0.3); }
+        .badge-booked { background: rgba(220,53,69,0.1); color: #ff6b7a; border: 1px solid rgba(220,53,69,0.2); }
+
+        .action-btns { display: flex; gap: 10px; align-items: center; }
+        .btn-edit {
+            background: rgba(226,185,111,0.1); color: #e2b96f;
+            border: 1px solid rgba(226,185,111,0.25); padding: 7px 16px;
+            border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 500;
+            transition: background 0.3s;
+        }
+        .btn-edit:hover { background: rgba(226,185,111,0.2); }
+        .btn-delete {
+            background: rgba(220,53,69,0.1); color: #ff6b7a;
+            border: 1px solid rgba(220,53,69,0.25); padding: 7px 16px;
+            border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.3s;
+        }
+        .btn-delete:hover { background: rgba(220,53,69,0.2); }
+
+        .empty-row td { text-align: center; color: rgba(255,255,255,0.25); padding: 40px; }
+        .price-cell { color: #e2b96f; font-weight: 600; }
     </style>
 </head>
 <body>
     <nav>
-        <h1>🏨 Admin Rooms</h1>
-        <div>
+        <div style="display:flex; align-items:center;">
+            <div class="nav-logo">🏨 Grand Stay</div>
+            <span class="nav-badge">Admin</span>
+        </div>
+        <div class="nav-links">
             <a href="/admin">Dashboard</a>
-            <a href="/logout">Logout</a>
+            <a href="/logout" class="logout">Logout</a>
         </div>
     </nav>
+
     <div class="container">
-        <div class="header">
-            <h2>Room Management</h2>
-            <p>View, add, update, or delete rooms available in the hotel.</p>
+        <div class="page-top">
+            <h1>Room <span>Management</span></h1>
+            <a href="/admin/rooms/add" class="btn-add">+ Add New Room</a>
         </div>
-        <div class="actions">
-            <a href="/admin/rooms/add">Add New Room</a>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th><th>Room Number</th><th>Type</th><th>Price / Night</th><th>Status</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for room in rooms %}
+                    <tr>
+                        <td>#{{ room['id'] }}</td>
+                        <td><strong>{{ room['room_number'] }}</strong></td>
+                        <td>{{ room['room_type'] }}</td>
+                        <td class="price-cell">${{ room['price_per_night'] }}</td>
+                        <td><span class="badge {% if room['status'] == 'available' %}badge-available{% else %}badge-booked{% endif %}">{{ room['status'] }}</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <a href="/admin/rooms/edit/{{ room['id'] }}" class="btn-edit">Edit</a>
+                                <form method="POST" action="/admin/rooms/delete/{{ room['id'] }}" onsubmit="return confirm('Delete this room?')">
+                                    <button type="submit" class="btn-delete">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr class="empty-row"><td colspan="6">No rooms found. Add your first room!</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Room Number</th>
-                    <th>Type</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for room in rooms %}
-                <tr>
-                    <td>{{ room['id'] }}</td>
-                    <td>{{ room['room_number'] }}</td>
-                    <td>{{ room['room_type'] }}</td>
-                    <td>${{ room['price_per_night'] }}</td>
-                    <td>{{ room['status'] }}</td>
-                    <td>
-                        <a href="/admin/rooms/edit/{{ room['id'] }}">Edit</a>
-                        <form method="POST" action="/admin/rooms/delete/{{ room['id'] }}" style="display:inline; margin-left:10px;">
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="6">No rooms available.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a href="/logout" class="logout">Logout</a>
     </div>
 </body>
 </html>

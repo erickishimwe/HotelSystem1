@@ -4,102 +4,250 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grand Stay Hotel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: white; overflow-x: hidden; }
+
         nav {
-            background-color: #1a1a2e;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            padding: 20px 60px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(10,10,10,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226,185,111,0.15);
         }
-        nav h1 { color: #e2b96f; font-size: 24px; }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-            font-size: 16px;
+        .nav-logo { font-family: 'Playfair Display', serif; font-size: 26px; color: #e2b96f; letter-spacing: 1px; }
+        .nav-links a {
+            color: rgba(255,255,255,0.8); text-decoration: none;
+            margin-left: 35px; font-size: 14px; font-weight: 500;
+            letter-spacing: 1px; text-transform: uppercase;
+            transition: color 0.3s;
         }
-        nav a:hover { color: #e2b96f; }
+        .nav-links a:hover { color: #e2b96f; }
+        .nav-links .btn-nav {
+            background: #e2b96f; color: #0a0a0a;
+            padding: 10px 24px; border-radius: 30px; font-weight: 600;
+        }
+        .nav-links .btn-nav:hover { background: #f0ca85; color: #0a0a0a; }
+
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-                        url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200');
-            background-size: cover;
-            background-position: center;
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(10,10,10,0.75) 0%, rgba(10,10,10,0.4) 100%),
+                        url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1600') center/cover no-repeat;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 0 20px;
         }
-        .hero h2 { font-size: 52px; margin-bottom: 20px; }
-        .hero p { font-size: 20px; margin-bottom: 40px; }
-        .btn {
-            background-color: #e2b96f;
-            color: #1a1a2e;
-            padding: 15px 40px;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 5px;
+        .hero-badge {
+            background: rgba(226,185,111,0.15);
+            border: 1px solid rgba(226,185,111,0.4);
+            color: #e2b96f; padding: 8px 20px; border-radius: 30px;
+            font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 25px; display: inline-block;
         }
-        .btn:hover { background-color: #c9a55a; }
-        .features {
-            display: flex;
-            justify-content: space-around;
-            padding: 60px 30px;
-            background: #f9f9f9;
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(48px, 8vw, 90px);
+            line-height: 1.1; margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #e2b96f 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .feature {
-            text-align: center;
-            max-width: 250px;
+        .hero p { font-size: 18px; color: rgba(255,255,255,0.7); margin-bottom: 45px; max-width: 500px; line-height: 1.7; }
+        .hero-btns { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .btn-primary {
+            background: linear-gradient(135deg, #e2b96f, #f0ca85);
+            color: #0a0a0a; padding: 16px 40px; border-radius: 50px;
+            text-decoration: none; font-weight: 700; font-size: 15px;
+            letter-spacing: 0.5px; transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 8px 30px rgba(226,185,111,0.35);
         }
-        .feature h3 { color: #1a1a2e; margin-bottom: 10px; font-size: 22px; }
-        .feature p { color: #666; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(226,185,111,0.5); }
+        .btn-secondary {
+            background: transparent; color: white;
+            padding: 16px 40px; border-radius: 50px;
+            text-decoration: none; font-weight: 500; font-size: 15px;
+            border: 1px solid rgba(255,255,255,0.3); transition: all 0.3s;
+        }
+        .btn-secondary:hover { border-color: #e2b96f; color: #e2b96f; }
+
+        .stats {
+            display: flex; justify-content: center; gap: 60px;
+            padding: 50px 60px;
+            background: rgba(226,185,111,0.05);
+            border-top: 1px solid rgba(226,185,111,0.1);
+            border-bottom: 1px solid rgba(226,185,111,0.1);
+            flex-wrap: wrap;
+        }
+        .stat { text-align: center; }
+        .stat-num { font-family: 'Playfair Display', serif; font-size: 42px; color: #e2b96f; }
+        .stat-label { font-size: 13px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; margin-top: 5px; }
+
+        .features { padding: 100px 60px; background: #0d0d0d; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title span { color: #e2b96f; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; }
+        .section-title h2 { font-family: 'Playfair Display', serif; font-size: 42px; margin-top: 10px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; }
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 20px; padding: 40px 30px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .feature-card:hover { transform: translateY(-8px); border-color: rgba(226,185,111,0.3); }
+        .feature-icon { font-size: 42px; margin-bottom: 20px; }
+        .feature-card h3 { font-size: 20px; margin-bottom: 12px; color: #fff; }
+        .feature-card p { color: rgba(255,255,255,0.5); line-height: 1.7; font-size: 15px; }
+
+        .rooms-preview { padding: 100px 60px; background: #0a0a0a; }
+        .rooms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; max-width: 1100px; margin: 0 auto 50px; }
+        .room-card {
+            border-radius: 20px; overflow: hidden;
+            background: #111; border: 1px solid rgba(255,255,255,0.07);
+            transition: transform 0.3s;
+        }
+        .room-card:hover { transform: translateY(-6px); }
+        .room-card img { width: 100%; height: 220px; object-fit: cover; }
+        .room-card-body { padding: 25px; }
+        .room-card-body h3 { font-size: 18px; margin-bottom: 8px; }
+        .room-card-body .price { color: #e2b96f; font-size: 22px; font-weight: 700; margin: 10px 0; }
+        .room-card-body p { color: rgba(255,255,255,0.5); font-size: 14px; }
+        .rooms-cta { text-align: center; }
+
         footer {
-            background: #1a1a2e;
-            color: white;
-            text-align: center;
-            padding: 20px;
+            background: #050505;
+            border-top: 1px solid rgba(226,185,111,0.1);
+            padding: 50px 60px 30px;
         }
+        .footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 30px; margin-bottom: 40px; }
+        .footer-brand .nav-logo { font-size: 22px; }
+        .footer-brand p { color: rgba(255,255,255,0.4); font-size: 14px; margin-top: 10px; max-width: 250px; line-height: 1.6; }
+        .footer-links h4 { color: #e2b96f; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
+        .footer-links a { display: block; color: rgba(255,255,255,0.5); text-decoration: none; font-size: 14px; margin-bottom: 8px; transition: color 0.3s; }
+        .footer-links a:hover { color: #e2b96f; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 25px; text-align: center; color: rgba(255,255,255,0.3); font-size: 13px; }
     </style>
 </head>
 <body>
     <nav>
-        <h1>🏨 Grand Stay Hotel</h1>
-        <div>
-            <a href="/rooms">Rooms</a>
+        <div class="nav-logo">🏨 Grand Stay</div>
+        <div class="nav-links">
             <a href="/login">Login</a>
-            <a href="/register">Register</a>
+            <a href="/register" class="btn-nav">Get Started</a>
         </div>
     </nav>
 
     <div class="hero">
-        <h2>Welcome to Grand Stay Hotel</h2>
-        <p>Experience luxury and comfort like never before</p>
-        <a href="/rooms" class="btn">Book a Room Now</a>
+        <div class="hero-badge">✦ Luxury Hotel Experience</div>
+        <h1>Where Luxury<br>Meets Comfort</h1>
+        <p>Discover an unparalleled hospitality experience in the heart of Kigali, Rwanda.</p>
+        <div class="hero-btns">
+            <a href="/register" class="btn-primary">Reserve Your Stay</a>
+            <a href="/login" class="btn-secondary">Sign In</a>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Luxury Rooms</div></div>
+        <div class="stat"><div class="stat-num">10K+</div><div class="stat-label">Happy Guests</div></div>
+        <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Years of Excellence</div></div>
+        <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">Guest Rating</div></div>
     </div>
 
     <div class="features">
-        <div class="feature">
-            <h3>🛏️ Luxury Rooms</h3>
-            <p>Spacious and elegantly furnished rooms for your comfort</p>
+        <div class="section-title">
+            <span>Why Choose Us</span>
+            <h2>An Experience Like No Other</h2>
         </div>
-        <div class="feature">
-            <h3>🍽️ Fine Dining</h3>
-            <p>World-class restaurant with international cuisine</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🛏️</div>
+                <h3>Luxury Rooms</h3>
+                <p>Spacious, elegantly furnished rooms with premium bedding and stunning city views.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🍽️</div>
+                <h3>Fine Dining</h3>
+                <p>World-class restaurant serving international and local cuisine crafted by top chefs.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏊</div>
+                <h3>Rooftop Pool</h3>
+                <p>Relax and unwind in our stunning infinity pool with panoramic city views.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💆</div>
+                <h3>Spa & Wellness</h3>
+                <p>Rejuvenate your body and mind with our full-service spa and wellness center.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>24/7 Security</h3>
+                <p>Your safety is our priority with round-the-clock security and concierge service.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚗</div>
+                <h3>Free Parking</h3>
+                <p>Complimentary valet parking available for all our valued guests.</p>
+            </div>
         </div>
-        <div class="feature">
-            <h3>🏊 Swimming Pool</h3>
-            <p>Relax and enjoy our stunning rooftop pool</p>
+    </div>
+
+    <div class="rooms-preview">
+        <div class="section-title">
+            <span>Our Rooms</span>
+            <h2>Find Your Perfect Room</h2>
+        </div>
+        <div class="rooms-grid">
+            <div class="room-card">
+                <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600" alt="Single Room">
+                <div class="room-card-body">
+                    <h3>Single Room</h3>
+                    <p>Perfect for solo travelers seeking comfort and style.</p>
+                    <div class="price">$70 / night</div>
+                </div>
+            </div>
+            <div class="room-card">
+                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600" alt="Double Room">
+                <div class="room-card-body">
+                    <h3>Double Room</h3>
+                    <p>Ideal for couples with a spacious and romantic setting.</p>
+                    <div class="price">$100 / night</div>
+                </div>
+            </div>
+            <div class="room-card">
+                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600" alt="Suite">
+                <div class="room-card-body">
+                    <h3>Luxury Suite</h3>
+                    <p>The ultimate luxury experience with premium amenities.</p>
+                    <div class="price">$220 / night</div>
+                </div>
+            </div>
+        </div>
+        <div class="rooms-cta">
+            <a href="/register" class="btn-primary">Book Now</a>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 Grand Stay Hotel. All rights reserved.</p>
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="nav-logo">🏨 Grand Stay</div>
+                <p>Experience luxury and comfort in the heart of Kigali, Rwanda.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+            </div>
+            <div class="footer-links">
+                <h4>Contact</h4>
+                <a href="#">📍 123 Grand Avenue, Kigali</a>
+                <a href="tel:+250788000000">📞 +250 788 000 000</a>
+                <a href="mailto:info@grandstay.com">✉️ info@grandstay.com</a>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 Grand Stay Hotel. All rights reserved.</div>
     </footer>
 </body>
 </html>
