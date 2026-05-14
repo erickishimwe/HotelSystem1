@@ -36,6 +36,15 @@ db_manager.initialize_database()
 # Decorator: Admin-only route protection
 # This decorator verifies the user is authenticated and has admin role
 # If not, it redirects unauthorized users to the guest dashboard
+def login_required(view_func):
+    """Decorator to restrict route access to authenticated users only."""
+    @functools.wraps(view_func)
+    def wrapper(*args, **kwargs):
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+        return view_func(*args, **kwargs)
+    return wrapper
+
 def admin_required(view_func):
     """
     Decorator to restrict route access to authenticated admin users only.
@@ -149,6 +158,7 @@ def logout():
     return redirect(url_for('home'))
 
 @app.route('/rooms')
+@login_required
 def rooms():
     """
     Browse available rooms route.
@@ -160,16 +170,13 @@ def rooms():
 # ================== GUEST ROUTES ==================
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     """
     Guest dashboard route.
     Displays personalized dashboard for logged-in guests.
     Redirects admin users to /admin instead.
-    Requires user to be logged in.
     """
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-
     # Redirect admins to their dashboard
     if session.get('role') == 'admin':
         return redirect(url_for('admin_dashboard'))
@@ -177,13 +184,13 @@ def dashboard():
     return render_template('dashboard.html', name=session.get('user_name'))
 
 @app.route('/book/<int:room_id>', methods=['GET', 'POST'])
+@login_required
 def book_room(room_id):
     """
     Room booking route.
     Allows authenticated guests to book available rooms.
     
     Validates:
-    - User is logged in
     - Room exists and is available
     - Check-in and check-out dates are provided and valid
     
@@ -193,8 +200,6 @@ def book_room(room_id):
     - Marks room as unavailable
     - Shows confirmation page
     """
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
 
     # Retrieve room details from database
     room = db_manager.get_room_by_id(room_id)
@@ -344,24 +349,16 @@ def admin_delete_room(room_id):
 # ================== GUEST BOOKING HISTORY & CANCEL ==================
 
 @app.route('/my-bookings')
+@login_required
 def my_bookings():
-    """
-    Guest booking history route.
-    Displays all bookings made by the logged-in guest.
-    """
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
+    """Guest booking history route."""
     bookings = db_manager.get_user_bookings(session['user_id'])
     return render_template('my_bookings.html', name=session.get('user_name'), bookings=bookings)
 
 @app.route('/cancel-booking/<int:booking_id>', methods=['POST'])
+@login_required
 def cancel_booking(booking_id):
-    """
-    Cancel a booking route.
-    Allows a logged-in guest to cancel their own booking.
-    """
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
+    """Cancel a booking route."""
     db_manager.cancel_booking(booking_id, session['user_id'])
     return redirect(url_for('my_bookings'))
 
